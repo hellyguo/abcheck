@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Reference Manual http://logback.qos.ch/manual/index.html -->
+
+<configuration>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8">
+            <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+            <pattern>%d{HH:mm:ss.SSS}|%-5level|%thread|%logger{20}|%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+
+        <!-- 可让每天产生一个日志文件，最多 10 个，自动回滚 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/tmp/abcheck-test-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS}|%-5level|%thread|%logger{20}|%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="asyncStdOut" class="ch.qos.logback.classic.AsyncAppender">
+        <!--  不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志   -->
+        <discardingThreshold>80</discardingThreshold>
+        <!--  更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>256</queueSize>
+        <!--  添加附加的appender,最多只能添加一个  -->
+        <appender-ref ref="stdout"/>
+    </appender>
+
+    <appender name="asyncRollingFile" class="ch.qos.logback.classic.AsyncAppender">
+        <!--  不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志   -->
+        <discardingThreshold>80</discardingThreshold>
+        <!--  更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>256</queueSize>
+        <!--  添加附加的appender,最多只能添加一个  -->
+        <appender-ref ref="RollingFile"/>
+    </appender>
+
+    <!-- 输出到控制台和文件，可定义更多的 Appender -->
+
+    <root level="INFO">
+        <!--<appender-ref ref="stdout" />-->
+        <!--<appender-ref ref="RollingFile"/>-->
+        <appender-ref ref="asyncStdOut"/>
+        <!--<appender-ref ref="asyncRollingFile"/>-->
+    </root>
+
+    <logger name="com.github.helly" level="WARN"/>
+    <logger name="com.github.helly.abcheck.ABCheckerHostPortTest" level="INFO"/>
+    <logger name="com.github.helly.abcheck.ABCheckerSample" level="INFO"/>
+
+</configuration>

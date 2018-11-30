@@ -1,0 +1,10 @@
+**/target/
+**/out/
+/.idea/
+*.iml
+~$*.*
+.svn
+jitwatch.out
+plantuml/*.png
+.gradle
+
