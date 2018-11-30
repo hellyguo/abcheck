@@ -1,11 +1,14 @@
 package com.github.helly.abcheck.thread;
 
-import com.github.helly.abcheck.ABStateHolder;
+import com.github.helly.abcheck.ABCommander;
 import com.github.helly.abcheck.event.TimeoutEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Random;
+
+import static com.github.helly.abcheck.constant.ABCheckConstants.FIX_TIME;
+import static com.github.helly.abcheck.constant.ABCheckConstants.MIN_MILLIS_RANDOM;
 
 /**
  * 超时控制线程主体
@@ -14,17 +17,15 @@ import java.util.Random;
  */
 public class ABCheckTimeoutLoop extends AbstractABCheckLoop implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ABCheckTimeoutLoop.class);
-    private static final long FIX_TIME = 120L;
-    private static final int MIN_MILLIS_RANDOM = 150;
     private static final Random RANDOM = new Random(System.currentTimeMillis());
 
-    public ABCheckTimeoutLoop(ABStateHolder holder) {
-        super(holder);
+    public ABCheckTimeoutLoop(ABCommander commander) {
+        super(commander);
     }
 
     @Override
     public void run() {
-        holder.markTimeoutThread(Thread.currentThread());
+        commander.markTimeoutThread(Thread.currentThread());
         super.run();
     }
 
@@ -32,7 +33,7 @@ public class ABCheckTimeoutLoop extends AbstractABCheckLoop implements Runnable 
     void loop() {
         try {
             long sleepTime;
-            if (holder.isMain()) {
+            if (commander.isMain()) {
                 // 当前为主节点情况下，固定频率发送PING
                 // 此频率低于随机数，防止备份节点触发超时进行状态无谓切换
                 sleepTime = FIX_TIME;
@@ -41,7 +42,7 @@ public class ABCheckTimeoutLoop extends AbstractABCheckLoop implements Runnable 
                 sleepTime = getRandomTimeout();
             }
             Thread.sleep(sleepTime);
-            holder.pushEvent(new TimeoutEvent());
+            commander.pushEvent(new TimeoutEvent());
         } catch (InterruptedException e) {
             LOGGER.info("interrupted, cancel timeout");
         }

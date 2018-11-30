@@ -1,6 +1,6 @@
 package com.github.helly.abcheck.thread;
 
-import com.github.helly.abcheck.ABStateHolder;
+import com.github.helly.abcheck.ABCommander;
 import com.github.helly.abcheck.event.RecvPingEvent;
 import com.github.helly.abcheck.event.RecvReqVoteEvent;
 import com.github.helly.abcheck.event.RecvVoteEvent;
@@ -33,8 +33,8 @@ public class ABCheckSrvSockLoop extends AbstractABCheckLoop implements Runnable 
     private Selector selector;
     private final ByteBuffer buffer;
 
-    public ABCheckSrvSockLoop(ABStateHolder holder, String host, int port) {
-        super(holder);
+    public ABCheckSrvSockLoop(ABCommander commander, String host, int port) {
+        super(commander);
         try {
             selector = Selector.open();
             serverSocketChannel = ServerSocketChannel.open();
@@ -149,17 +149,17 @@ public class ABCheckSrvSockLoop extends AbstractABCheckLoop implements Runnable 
         switch (packageType) {
             case PING: {
                 // 心跳包
-                holder.pushEvent(new RecvPingEvent());
+                commander.pushEvent(new RecvPingEvent());
                 break;
             }
             case REQ_VOTE: {
                 // 请求投票包
-                holder.pushEvent(new RecvReqVoteEvent());
+                commander.pushEvent(new RecvReqVoteEvent());
                 break;
             }
             case VOTE: {
                 // 投票结果包
-                holder.pushEvent(new RecvVoteEvent(version > 0));
+                commander.pushEvent(new RecvVoteEvent(version > 0));
                 break;
             }
             default: {

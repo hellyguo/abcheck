@@ -1,6 +1,6 @@
 package com.github.helly.abcheck.thread;
 
-import com.github.helly.abcheck.ABStateHolder;
+import com.github.helly.abcheck.ABCommander;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,17 +15,17 @@ abstract class AbstractABCheckLoop implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractABCheckLoop.class);
 
     /**
-     * 状态持有
+     * 命令执行器
      */
-    ABStateHolder holder;
+    ABCommander commander;
 
     /**
      * 循环控制开关变量
      */
     private final AtomicBoolean active = new AtomicBoolean(true);
 
-    AbstractABCheckLoop(ABStateHolder holder) {
-        this.holder = holder;
+    AbstractABCheckLoop(ABCommander commander) {
+        this.commander = commander;
     }
 
     @Override

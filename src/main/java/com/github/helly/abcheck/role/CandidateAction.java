@@ -1,6 +1,6 @@
 package com.github.helly.abcheck.role;
 
-import com.github.helly.abcheck.ABStateHolder;
+import com.github.helly.abcheck.ABCommander;
 import com.github.helly.abcheck.event.ABCheckEvent;
 import com.github.helly.abcheck.sock.PingPackage;
 import com.github.helly.abcheck.sock.VotePackage;
@@ -14,34 +14,34 @@ import java.util.EventObject;
  */
 public class CandidateAction implements RoleAction {
     @Override
-    public void perform(ABStateHolder holder, EventObject event) {
+    public void perform(ABCommander commander, EventObject event) {
         ABCheckEvent abCheckEvent = (ABCheckEvent) event;
         switch (abCheckEvent.type()) {
             case TIMEOUT: {
-                asLeader(holder);
+                asLeader(commander);
                 break;
             }
             case RECV_PING: {
-                asFollower(holder);
+                asFollower(commander);
                 break;
             }
             case RECV_REQ_VOTE: {
                 // 降级为备份节点
-                holder.changeToFollower();
+                commander.changeToFollower();
                 // 投票不同意
-                holder.sendReqPackage(new VotePackage(false));
+                commander.sendReqPackage(new VotePackage(false));
                 // 重置超时
-                holder.resetTimeout();
+                commander.resetTimeout();
                 break;
             }
             case RECV_VOTE: {
                 Boolean yes = (Boolean) event.getSource();
                 if (yes) {
                     // 对方投票同意
-                    asLeader(holder);
+                    asLeader(commander);
                 } else {
                     // 对方投票不同意
-                    asFollower(holder);
+                    asFollower(commander);
                 }
                 break;
             }
@@ -51,19 +51,19 @@ public class CandidateAction implements RoleAction {
         }
     }
 
-    private void asLeader(ABStateHolder holder) {
+    private void asLeader(ABCommander commander) {
         // 升级为主节点
-        holder.changeToLeader();
+        commander.changeToLeader();
         // 发送心跳包
-        holder.sendReqPackage(new PingPackage(System.currentTimeMillis()));
+        commander.sendReqPackage(new PingPackage(System.currentTimeMillis()));
         // 重置超时
-        holder.resetTimeout();
+        commander.resetTimeout();
     }
 
-    private void asFollower(ABStateHolder holder) {
+    private void asFollower(ABCommander commander) {
         // 降级为备份节点
-        holder.changeToFollower();
+        commander.changeToFollower();
         // 重置超时
-        holder.resetTimeout();
+        commander.resetTimeout();
     }
 }

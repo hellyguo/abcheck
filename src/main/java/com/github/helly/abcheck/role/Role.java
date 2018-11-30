@@ -1,6 +1,6 @@
 package com.github.helly.abcheck.role;
 
-import com.github.helly.abcheck.ABStateHolder;
+import com.github.helly.abcheck.ABCommander;
 import com.github.helly.abcheck.event.ABCheckEvent;
 
 import java.util.EventObject;
@@ -33,7 +33,7 @@ public enum Role {
         this.action = action;
     }
 
-    public void performAction(ABStateHolder holder, ABCheckEvent event) {
-        action.perform(holder, (EventObject) event);
+    public void performAction(ABCommander commander, ABCheckEvent event) {
+        action.perform(commander, (EventObject) event);
     }
 }

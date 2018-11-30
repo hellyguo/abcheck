@@ -1,6 +1,6 @@
 package com.github.helly.abcheck.role;
 
-import com.github.helly.abcheck.ABStateHolder;
+import com.github.helly.abcheck.ABCommander;
 import com.github.helly.abcheck.event.ABCheckEvent;
 import com.github.helly.abcheck.sock.ReqVotePackage;
 import com.github.helly.abcheck.sock.VotePackage;
@@ -14,28 +14,28 @@ import java.util.EventObject;
  */
 public class FollowerAction implements RoleAction {
     @Override
-    public void perform(ABStateHolder holder, EventObject event) {
+    public void perform(ABCommander commander, EventObject event) {
         ABCheckEvent abCheckEvent = (ABCheckEvent) event;
         switch (abCheckEvent.type()) {
             case TIMEOUT: {
                 // 升级为候选人
-                holder.changeToCandidate();
+                commander.changeToCandidate();
                 // 请求投票
-                holder.sendReqPackage(new ReqVotePackage());
+                commander.sendReqPackage(new ReqVotePackage());
                 // 重置超时
-                holder.resetTimeout();
+                commander.resetTimeout();
                 break;
             }
             case RECV_PING: {
                 // 重置超时
-                holder.resetTimeout();
+                commander.resetTimeout();
                 break;
             }
             case RECV_REQ_VOTE: {
                 // 投票同意
-                holder.sendReqPackage(new VotePackage(true));
+                commander.sendReqPackage(new VotePackage(true));
                 // 重置超时
-                holder.resetTimeout();
+                commander.resetTimeout();
                 break;
             }
             default: {

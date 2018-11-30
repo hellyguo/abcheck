@@ -1,6 +1,6 @@
 package com.github.helly.abcheck.role;
 
-import com.github.helly.abcheck.ABStateHolder;
+import com.github.helly.abcheck.ABCommander;
 
 import java.util.EventObject;
 
@@ -13,8 +13,8 @@ public interface RoleAction {
     /**
      * 执行动作
      *
-     * @param holder 状态持有对象
-     * @param event  事件
+     * @param commander 命令执行器
+     * @param event     事件
      */
-    void perform(ABStateHolder holder, EventObject event);
+    void perform(ABCommander commander, EventObject event);
 }

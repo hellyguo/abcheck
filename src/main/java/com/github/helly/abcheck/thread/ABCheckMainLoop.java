@@ -1,6 +1,6 @@
 package com.github.helly.abcheck.thread;
 
-import com.github.helly.abcheck.ABStateHolder;
+import com.github.helly.abcheck.ABCommander;
 import com.github.helly.abcheck.event.ABCheckEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,16 +13,16 @@ import org.slf4j.LoggerFactory;
 public class ABCheckMainLoop extends AbstractABCheckLoop implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ABCheckMainLoop.class);
 
-    public ABCheckMainLoop(ABStateHolder holder) {
-        super(holder);
+    public ABCheckMainLoop(ABCommander commander) {
+        super(commander);
     }
 
     @Override
     void loop() {
-        ABCheckEvent event = holder.fetchEvent();
+        ABCheckEvent event = commander.fetchEvent();
         if (event != null) {
             LOGGER.info("recv event:[{}]", event.type());
-            holder.check(event);
+            commander.check(event);
         }
     }
 

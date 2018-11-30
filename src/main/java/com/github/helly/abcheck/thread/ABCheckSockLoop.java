@@ -1,6 +1,6 @@
 package com.github.helly.abcheck.thread;
 
-import com.github.helly.abcheck.ABStateHolder;
+import com.github.helly.abcheck.ABCommander;
 import com.github.helly.abcheck.sock.ReqPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +32,8 @@ public class ABCheckSockLoop extends AbstractABCheckLoop implements Runnable {
     private final InetSocketAddress otherHostPort;
     private final ByteBuffer buffer;
 
-    public ABCheckSockLoop(ABStateHolder holder, String self, String other, int port) {
-        super(holder);
+    public ABCheckSockLoop(ABCommander commander, String self, String other, int port) {
+        super(commander);
         this.self = new byte[HOST_INFO_LEN];
         byte[] bytes = self.getBytes();
         System.arraycopy(bytes, 0, this.self, 0, bytes.length);
@@ -43,7 +43,7 @@ public class ABCheckSockLoop extends AbstractABCheckLoop implements Runnable {
 
     @Override
     void loop() {
-        ReqPackage reqPackage = holder.fetchReqPackage();
+        ReqPackage reqPackage = commander.fetchReqPackage();
         if (reqPackage != null) {
             // 读取到TCP包，以短连接模式发送出
             sendToOther(reqPackage);

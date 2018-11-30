@@ -41,7 +41,15 @@ public final class ABCheckConstants {
      * 连接信息大小
      */
     public static final int HOST_INFO_LEN = 24;
+    /**
+     * 固定时长
+     */
+    public static final long FIX_TIME = 120L;
+    /**
+     * 随机最小时长
+     */
+    public static final int MIN_MILLIS_RANDOM = 150;
 
-    private ABCheckConstants() {
+    public ABCheckConstants() {
     }
 }

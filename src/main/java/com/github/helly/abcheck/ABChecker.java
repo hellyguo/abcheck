@@ -7,39 +7,44 @@ package com.github.helly.abcheck;
  */
 public final class ABChecker {
 
-    private ABStateHolder holder;
+    private ABStateHolder stateHolder;
+    private ABThreadHolder threadHolder;
 
     /**
      * 创建检查器
      *
-     * @param hostports 形如："127.0.0.1:22222;127.0.0.1:22223"，西文分号切割
+     * @param hostPorts 形如："127.0.0.1:22222;127.0.0.1:22223"，西文分号切割
      */
-    public ABChecker(String hostports) {
-        this(hostports.split(";"));
+    public ABChecker(String hostPorts) {
+        this(hostPorts.split(";"));
     }
 
 
     /**
      * 创建检查器
      *
-     * @param hostports 形如：new String[]{"127.0.0.1:22222", "127.0.0.1:22223"}
+     * @param hostPorts 形如：new String[]{"127.0.0.1:22222", "127.0.0.1:22223"}
      */
-    public ABChecker(String[] hostports) {
-        holder = new ABStateHolder(hostports);
+    public ABChecker(String[] hostPorts) {
+        stateHolder = new ABStateHolder();
+        ABDataQueues dataQueues = new ABDataQueues();
+        threadHolder = new ABThreadHolder(hostPorts);
+        ABCommander commander = new ABCommander(stateHolder, dataQueues, threadHolder);
+        threadHolder.setCommander(commander);
     }
 
     /**
      * 初始化
      */
     public void init() {
-        holder.init();
+        threadHolder.init();
     }
 
     /**
      * 销毁
      */
     public void destroy() {
-        holder.destroy();
+        threadHolder.destroy();
     }
 
     /**
@@ -48,7 +53,7 @@ public final class ABChecker {
      * @return true:主机；false:备份
      */
     public boolean isMain() {
-        return holder.isMain();
+        return stateHolder.isMain();
     }
 
 }
