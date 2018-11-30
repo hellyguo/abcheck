@@ -113,7 +113,7 @@ public final class ABStateHolder {
         findSelfAndOther(hostports);
         loopThreads = new ThreadPoolExecutor(POOL_SIZE, POOL_SIZE,
                 0L, TimeUnit.MILLISECONDS,
-                new ArrayBlockingQueue<Runnable>(POOL_QUEUE_CAPACITY),
+                new ArrayBlockingQueue<>(POOL_QUEUE_CAPACITY),
                 new SimpleThreadFactory(threadPoolPrefix),
                 new ThreadPoolExecutor.AbortPolicy());
         mainLoop = new ABCheckMainLoop(this);
