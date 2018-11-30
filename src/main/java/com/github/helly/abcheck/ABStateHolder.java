@@ -33,16 +33,16 @@ public final class ABStateHolder {
     /**
      * 是否主机标志，缓存结果用以提速
      */
-    private AtomicBoolean mainFlag = new AtomicBoolean(false);
+    private final AtomicBoolean mainFlag = new AtomicBoolean(false);
 
     /**
      * 事件队列，见{@link ABCheckEvent}
      */
-    private ArrayBlockingQueue<ABCheckEvent> events = new ArrayBlockingQueue<>(QUEUE_CAPACITY, true);
+    private final ArrayBlockingQueue<ABCheckEvent> events = new ArrayBlockingQueue<>(QUEUE_CAPACITY, true);
     /**
      * 发送TCP包队列，见{@link ReqPackage}
      */
-    private ArrayBlockingQueue<ReqPackage> reqQueue = new ArrayBlockingQueue<>(QUEUE_CAPACITY, true);
+    private final ArrayBlockingQueue<ReqPackage> reqQueue = new ArrayBlockingQueue<>(QUEUE_CAPACITY, true);
 
     /**
      * 线程池
@@ -73,12 +73,12 @@ public final class ABStateHolder {
     /**
      * 线程池前缀，直接用AB机连接信息
      */
-    private String threadPoolPrefix;
+    private final String threadPoolPrefix;
 
     /**
      * 传入的AB机信息
      */
-    private String[] hostports;
+    private final String[] hostports;
     /**
      * 本机地址
      */

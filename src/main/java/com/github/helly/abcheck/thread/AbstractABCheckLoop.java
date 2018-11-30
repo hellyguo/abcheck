@@ -22,7 +22,7 @@ abstract class AbstractABCheckLoop implements Runnable {
     /**
      * 循环控制开关变量
      */
-    private AtomicBoolean active = new AtomicBoolean(true);
+    private final AtomicBoolean active = new AtomicBoolean(true);
 
     AbstractABCheckLoop(ABStateHolder holder) {
         this.holder = holder;
@@ -49,7 +49,7 @@ abstract class AbstractABCheckLoop implements Runnable {
     /**
      * 线程子名称，用于拼接到线程名上
      *
-     * @return
+     * @return subName
      */
     abstract String threadSubName();
 

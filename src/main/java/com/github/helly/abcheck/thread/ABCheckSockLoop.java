@@ -25,12 +25,12 @@ public class ABCheckSockLoop extends AbstractABCheckLoop implements Runnable {
     /**
      * 本机信息
      */
-    private byte[] self;
+    private final byte[] self;
     /**
      * 另一节点信息
      */
-    private InetSocketAddress otherHostPort;
-    private ByteBuffer buffer;
+    private final InetSocketAddress otherHostPort;
+    private final ByteBuffer buffer;
 
     public ABCheckSockLoop(ABStateHolder holder, String self, String other, int port) {
         super(holder);

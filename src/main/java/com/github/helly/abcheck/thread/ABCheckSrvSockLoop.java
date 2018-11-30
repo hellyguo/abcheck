@@ -31,7 +31,7 @@ public class ABCheckSrvSockLoop extends AbstractABCheckLoop implements Runnable 
 
     private ServerSocketChannel serverSocketChannel;
     private Selector selector;
-    private ByteBuffer buffer;
+    private final ByteBuffer buffer;
 
     public ABCheckSrvSockLoop(ABStateHolder holder, String host, int port) {
         super(holder);

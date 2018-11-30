@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author HellyGuo
  */
 public class SimpleThreadFactory implements ThreadFactory {
-    private String threadName;
-    private AtomicInteger count = new AtomicInteger(0);
+    private final String threadName;
+    private final AtomicInteger count = new AtomicInteger(0);
 
     public SimpleThreadFactory(String threadName) {
         this.threadName = threadName;
