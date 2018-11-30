@@ -3,8 +3,6 @@ package com.github.helly.abcheck;
 import com.github.helly.abcheck.event.ABCheckEvent;
 import com.github.helly.abcheck.role.Role;
 import com.github.helly.abcheck.sock.ReqPackage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 命令执行器
@@ -15,19 +13,19 @@ public final class ABCommander {
 
 
     private ABStateHolder stateHolder;
-    private ABDataQueues dataQueues;
+    private ABQueueHolder queueHolder;
     private ABThreadHolder threadHolder;
 
     /**
      * 命令执行对象，内部使用，不可被直接使用
      *
      * @param stateHolder  {@link ABStateHolder} 状态持有对象
-     * @param dataQueues   {@link ABDataQueues} 队列持有对象
+     * @param queueHolder   {@link ABQueueHolder} 队列持有对象
      * @param threadHolder {@link ABThreadHolder} 线程持有对象
      */
-    ABCommander(ABStateHolder stateHolder, ABDataQueues dataQueues, ABThreadHolder threadHolder) {
+    ABCommander(ABStateHolder stateHolder, ABQueueHolder queueHolder, ABThreadHolder threadHolder) {
         this.stateHolder = stateHolder;
-        this.dataQueues = dataQueues;
+        this.queueHolder = queueHolder;
         this.threadHolder = threadHolder;
     }
 
@@ -55,7 +53,7 @@ public final class ABCommander {
      * @param event 事件
      */
     public void pushEvent(ABCheckEvent event) {
-        dataQueues.pushEvent(event);
+        queueHolder.pushEvent(event);
     }
 
     /**
@@ -64,7 +62,7 @@ public final class ABCommander {
      * @return 当前第一个事件，队列为空时返回null
      */
     public ABCheckEvent fetchEvent() {
-        return dataQueues.fetchEvent();
+        return queueHolder.fetchEvent();
     }
 
     /**
@@ -73,7 +71,7 @@ public final class ABCommander {
      * @param reqPackage TCP包
      */
     public void sendReqPackage(ReqPackage reqPackage) {
-        dataQueues.sendReqPackage(reqPackage);
+        queueHolder.sendReqPackage(reqPackage);
     }
 
     /**
@@ -82,7 +80,7 @@ public final class ABCommander {
      * @return 当前第一个TCP包，队列为空时返回null
      */
     public ReqPackage fetchReqPackage() {
-        return dataQueues.fetchReqPackage();
+        return queueHolder.fetchReqPackage();
     }
 
     /**

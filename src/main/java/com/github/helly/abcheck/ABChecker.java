@@ -7,8 +7,8 @@ package com.github.helly.abcheck;
  */
 public final class ABChecker {
 
-    private ABStateHolder stateHolder;
     private ABThreadHolder threadHolder;
+    private ABCommander commander;
 
     /**
      * 创建检查器
@@ -26,10 +26,10 @@ public final class ABChecker {
      * @param hostPorts 形如：new String[]{"127.0.0.1:22222", "127.0.0.1:22223"}
      */
     public ABChecker(String[] hostPorts) {
-        stateHolder = new ABStateHolder();
-        ABDataQueues dataQueues = new ABDataQueues();
+        ABStateHolder stateHolder = new ABStateHolder();
+        ABQueueHolder queueHolder = new ABQueueHolder();
         threadHolder = new ABThreadHolder(hostPorts);
-        ABCommander commander = new ABCommander(stateHolder, dataQueues, threadHolder);
+        commander = new ABCommander(stateHolder, queueHolder, threadHolder);
         threadHolder.setCommander(commander);
     }
 
@@ -53,7 +53,7 @@ public final class ABChecker {
      * @return true:主机；false:备份
      */
     public boolean isMain() {
-        return stateHolder.isMain();
+        return commander.isMain();
     }
 
 }

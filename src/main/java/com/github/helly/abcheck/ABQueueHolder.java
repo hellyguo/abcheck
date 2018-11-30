@@ -16,8 +16,8 @@ import static com.github.helly.abcheck.constant.ABCheckConstants.QUEUE_CAPACITY;
  *
  * @author HellyGuo
  */
-final class ABDataQueues {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ABDataQueues.class);
+final class ABQueueHolder {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ABQueueHolder.class);
 
     /**
      * 事件队列，见{@link ABCheckEvent}
@@ -31,7 +31,7 @@ final class ABDataQueues {
     /**
      * 队列持有对象，内部使用，不可被直接使用
      */
-    ABDataQueues() {
+    ABQueueHolder() {
     }
 
     /**
