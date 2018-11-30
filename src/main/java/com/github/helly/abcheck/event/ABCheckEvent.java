@@ -6,5 +6,9 @@ package com.github.helly.abcheck.event;
  * @author HellyGuo
  */
 public interface ABCheckEvent {
+    /**
+     * 事件类型
+     * @return {@link ABCheckEventType}
+     */
     ABCheckEventType type();
 }
