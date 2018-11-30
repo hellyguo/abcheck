@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 事件处理线程主体
+ *
+ * @author HellyGuo
  */
 public class ABCheckMainLoop extends AbstractABCheckLoop implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ABCheckMainLoop.class);

@@ -3,7 +3,7 @@ package com.github.helly.abcheck.constant;
 /**
  * 常量类
  *
- * @auther Helly Guo
+ * @author Helly Guo
  * Created on 11/29/18 11:05 PM
  */
 public final class ABCheckConstants {

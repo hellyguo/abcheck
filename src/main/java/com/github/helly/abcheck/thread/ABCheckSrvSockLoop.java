@@ -19,12 +19,12 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
-import static com.github.helly.abcheck.constant.ABCheckConstants.BUF_CAPACITY;
-import static com.github.helly.abcheck.constant.ABCheckConstants.HOST_INFO_LEN;
-import static com.github.helly.abcheck.constant.ABCheckConstants.MILLS_ONE_SEC;
+import static com.github.helly.abcheck.constant.ABCheckConstants.*;
 
 /**
  * 端口监听线程主体
+ *
+ * @author HellyGuo
  */
 public class ABCheckSrvSockLoop extends AbstractABCheckLoop implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ABCheckSrvSockLoop.class);

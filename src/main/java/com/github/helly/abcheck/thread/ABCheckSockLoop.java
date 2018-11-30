@@ -16,6 +16,8 @@ import static com.github.helly.abcheck.constant.ABCheckConstants.HOST_INFO_LEN;
 
 /**
  * 客户端请求线程主体
+ *
+ * @author HellyGuo
  */
 public class ABCheckSockLoop extends AbstractABCheckLoop implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ABCheckSockLoop.class);
