@@ -50,6 +50,6 @@ public final class ABCheckConstants {
      */
     public static final int MIN_MILLIS_RANDOM = 150;
 
-    public ABCheckConstants() {
+    private ABCheckConstants() {
     }
 }
