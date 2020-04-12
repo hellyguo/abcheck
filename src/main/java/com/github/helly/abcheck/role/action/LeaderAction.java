@@ -1,4 +1,4 @@
-package com.github.helly.abcheck.role;
+package com.github.helly.abcheck.role.action;
 
 import com.github.helly.abcheck.ABCommander;
 import com.github.helly.abcheck.event.ABCheckEvent;

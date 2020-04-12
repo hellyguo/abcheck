@@ -2,6 +2,10 @@ package com.github.helly.abcheck.role;
 
 import com.github.helly.abcheck.ABCommander;
 import com.github.helly.abcheck.event.ABCheckEvent;
+import com.github.helly.abcheck.role.action.CandidateAction;
+import com.github.helly.abcheck.role.action.FollowerAction;
+import com.github.helly.abcheck.role.action.LeaderAction;
+import com.github.helly.abcheck.role.action.RoleAction;
 
 import java.util.EventObject;
 
