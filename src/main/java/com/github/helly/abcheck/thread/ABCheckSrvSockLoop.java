@@ -146,26 +146,6 @@ public class ABCheckSrvSockLoop extends AbstractABCheckLoop implements Runnable 
      */
     private void handlePackage(String hostInfo, int type, long version) {
         LOGGER.debug("[{}][{}][{}]", hostInfo, type, version);
-        PackageType packageType = PackageType.values()[type];
-        switch (packageType) {
-            case PING: {
-                // 心跳包
-                commander.pushEvent(new RecvPingEvent());
-                break;
-            }
-            case REQ_VOTE: {
-                // 请求投票包
-                commander.pushEvent(new RecvReqVoteEvent());
-                break;
-            }
-            case VOTE: {
-                // 投票结果包
-                commander.pushEvent(new RecvVoteEvent(version > 0));
-                break;
-            }
-            default: {
-                break;
-            }
-        }
+        commander.pushEvent(PackageType.values()[type].createEvent(type, version));
     }
 }
