@@ -5,7 +5,7 @@ import com.github.helly.abcheck.event.TimeoutEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.github.helly.abcheck.constant.ABCheckConstants.FIX_TIME;
 import static com.github.helly.abcheck.constant.ABCheckConstants.MIN_MILLIS_RANDOM;
@@ -17,7 +17,6 @@ import static com.github.helly.abcheck.constant.ABCheckConstants.MIN_MILLIS_RAND
  */
 public class ABCheckTimeoutLoop extends AbstractABCheckLoop implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ABCheckTimeoutLoop.class);
-    private static final Random RANDOM = new Random(System.currentTimeMillis());
 
     public ABCheckTimeoutLoop(ABCommander commander) {
         super(commander);
@@ -32,16 +31,10 @@ public class ABCheckTimeoutLoop extends AbstractABCheckLoop implements Runnable 
     @Override
     void loop() {
         try {
-            long sleepTime;
-            if (commander.isMain()) {
-                // 当前为主节点情况下，固定频率发送PING
-                // 此频率低于随机数，防止备份节点触发超时进行状态无谓切换
-                sleepTime = FIX_TIME;
-            } else {
-                // 非主节点，随机超时时间。最大程度降低主节点和备份节点撞一起发起的概率。
-                sleepTime = getRandomTimeout();
-            }
-            Thread.sleep(sleepTime);
+            // 当前为主节点情况下，固定频率发送PING
+            // 此频率低于随机数，防止备份节点触发超时进行状态无谓切换
+            // 非主节点，随机超时时间。最大程度降低主节点和备份节点撞一起发起的概率。
+            Thread.sleep(commander.isMain() ? FIX_TIME : genRandomTimeout());
             commander.pushEvent(new TimeoutEvent());
         } catch (InterruptedException e) {
             LOGGER.info("interrupted, cancel timeout");
@@ -58,7 +51,7 @@ public class ABCheckTimeoutLoop extends AbstractABCheckLoop implements Runnable 
      *
      * @return 随机数
      */
-    private static long getRandomTimeout() {
-        return RANDOM.nextInt(MIN_MILLIS_RANDOM) + MIN_MILLIS_RANDOM;
+    private static long genRandomTimeout() {
+        return ThreadLocalRandom.current().nextInt(MIN_MILLIS_RANDOM) + MIN_MILLIS_RANDOM;
     }
 }
