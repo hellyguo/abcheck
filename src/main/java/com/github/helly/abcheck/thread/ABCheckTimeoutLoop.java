@@ -37,7 +37,7 @@ public class ABCheckTimeoutLoop extends AbstractABCheckLoop implements Runnable 
             Thread.sleep(commander.isMain() ? FIX_TIME : genRandomTimeout());
             commander.pushEvent(new TimeoutEvent());
         } catch (InterruptedException e) {
-            LOGGER.info("interrupted, cancel timeout");
+            LOGGER.debug("interrupted, cancel timeout");
         }
     }
 

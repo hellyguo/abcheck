@@ -21,7 +21,7 @@ public class ABCheckMainLoop extends AbstractABCheckLoop implements Runnable {
     void loop() {
         ABCheckEvent event = commander.fetchEvent();
         if (event != null) {
-            LOGGER.info("recv event:[{}]", event.type());
+            LOGGER.debug("recv event:[{}]", event.type());
             commander.check(event);
         }
     }
