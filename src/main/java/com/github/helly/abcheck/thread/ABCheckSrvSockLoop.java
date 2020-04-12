@@ -78,6 +78,7 @@ public class ABCheckSrvSockLoop extends AbstractABCheckLoop implements Runnable 
 
     @Override
     public void stop() {
+        super.stop();
         close(selector);
         close(serverSocketChannel);
     }
