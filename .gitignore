@@ -6,6 +6,5 @@
 ~$*.*
 .svn
 jitwatch.out
-plantuml/*.png
 .gradle
 
