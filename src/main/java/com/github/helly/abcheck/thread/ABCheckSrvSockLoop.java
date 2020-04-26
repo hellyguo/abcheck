@@ -128,12 +128,6 @@ public class ABCheckSrvSockLoop extends AbstractABCheckLoop implements Runnable 
             handlePackage(hostInfo, type, version);
         } catch (IOException e) {
             LOGGER.warn(e.getMessage(), e);
-        } finally {
-            try {
-                channel.close();
-            } catch (IOException e) {
-                LOGGER.warn(e.getMessage(), e);
-            }
         }
     }
 

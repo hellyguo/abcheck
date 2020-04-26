@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -31,6 +30,7 @@ public class ABCheckSockLoop extends AbstractABCheckLoop implements Runnable {
      */
     private final InetSocketAddress otherHostPort;
     private final ByteBuffer buffer;
+    private SocketChannel channel;
 
     public ABCheckSockLoop(ABCommander commander, String self, String other, int port) {
         super(commander);
@@ -51,25 +51,38 @@ public class ABCheckSockLoop extends AbstractABCheckLoop implements Runnable {
     }
 
     /**
-     * 以短连接发送TCP包
+     * 以长连接发送TCP包
      *
      * @param reqPackage TCP包
      */
     private void sendToOther(ReqPackage reqPackage) {
         try {
-            SocketChannel channel = SocketChannel.open();
-            channel.connect(otherHostPort);
-            buffer.clear();
-            buffer.put(self);
-            buffer.putInt(reqPackage.getType());
-            buffer.putLong(reqPackage.getVersion());
-            buffer.flip();
-            channel.write(buffer);
-        } catch (ConnectException e) {
-            LOGGER.warn("connect to other[{}] failed", otherHostPort);
+            if (checkChannel()) {
+                buffer.clear();
+                buffer.put(self);
+                buffer.putInt(reqPackage.getType());
+                buffer.putLong(reqPackage.getVersion());
+                buffer.flip();
+                channel.write(buffer);
+            }
         } catch (IOException e) {
+            channel = null;
             LOGGER.warn(e.getMessage(), e);
         }
+    }
+
+    private boolean checkChannel() {
+        if (channel == null) {
+            try {
+                channel = SocketChannel.open();
+                channel.connect(otherHostPort);
+            } catch (IOException e) {
+                LOGGER.warn("connect to other[{}] failed", e.getMessage());
+                channel = null;
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
